@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  auth-service:
+    build:
+      context: ./auth-service
+    ports:
+      - "4001:4001"
+    environment:
+      - AUTH_PORT=4001
+
+  game-service:
+    build:
+      context: ./game-service
+    ports:
+      - "4002:4002"
+    environment:
+      - GAME_PORT=4002
+
+  quiz-service:
+    build:
+      context: ./quiz-service
+    ports:
+      - "4003:4003"
+    environment:
+      - QUIZ_PORT=4003
