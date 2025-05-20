@@ -14,12 +14,12 @@ export default function LoginPage() {
       body: JSON.stringify({ username, password }),
     });
 
-    const text = await res.text();
+    const data = await res.json();
     if (res.ok) {
-      localStorage.setItem("token", text);
+      localStorage.setItem("token", data.token);
       setMessage("Zalogowano!");
     } else {
-      setMessage(text);
+      setMessage(data.error || "Wystąpił błąd");
     }
   };
 

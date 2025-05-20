@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const { authenticateToken } = require("./middleware/jwtMiddleware");
 
 dotenv.config();
 
@@ -30,8 +31,15 @@ app.post("/login", async (req, res) => {
   const user = users.find((u) => u.username === username);
   if (!user) return res.status(400).json({ error: "Invalid credentials" });
 
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) return res.status(400).json({ error: "Invalid credentials" });
+
   const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: "1h" });
   res.json({ token });
+});
+
+app.get("/profile", authenticateToken, (req, res) => {
+  res.json({ user: req.user });
 });
 
 app.listen(PORT, () => console.log(`Auth service running on ${PORT}`));
