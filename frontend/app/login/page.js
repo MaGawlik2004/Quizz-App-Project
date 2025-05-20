@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 export default function LoginPage() {
@@ -24,19 +25,29 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ padding: 20 }}>
+    <div className="login-container">
       <h1>Login</h1>
-      <input
-        placeholder="Username"
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleLogin}>Login</button>
-      <p>{message}</p>
+      <form onSubmit={handleLogin}>
+        <input
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit">Login</button>
+      </form>
+      <p className="message">{message}</p>
+      <p>
+        Nie masz konta?{" "}
+        <Link href="/register" className="link">
+          Zarejestruj się
+        </Link>
+      </p>
     </div>
   );
 }

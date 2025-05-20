@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 export default function RegisterPage() {
@@ -19,19 +20,29 @@ export default function RegisterPage() {
   };
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Register</h1>
-      <input
-        placeholder="Username"
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleRegister}>Register</button>
-      <p>{message}</p>
+    <div className="register-container">
+      <h1>Sign Up</h1>
+      <form onSubmit={handleRegister}>
+        <input
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit">Sign Up</button>
+      </form>
+      <p className="message">{message}</p>
+      <p>
+        Already have an account?{" "}
+        <Link href="/login" className="link">
+          Login
+        </Link>
+      </p>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import LogoutButton from "../components/LogoutButton";
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState(null);
@@ -29,11 +30,17 @@ export default function ProfilePage() {
       });
   }, []);
 
-  if (!userData) return <div>Brak dostępu lub brak danych.</div>;
+  if (!userData)
+    return (
+      <div className="profile-container">
+        <p className="error-message">Brak dostępu lub brak danych.</p>
+      </div>
+    );
 
   return (
-    <div>
-      <h1>Witaj, {userData.username}</h1>
+    <div className="profile-container">
+      <h1>Witaj, {userData.username}!</h1>
+      <LogoutButton />
     </div>
   );
 }
