@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
@@ -26,6 +27,9 @@ export default function ProfilePage() {
     <div className="profile-container">
       <h1>Witaj, {profile.preferred_username}!</h1>
       <button onClick={handleLogout}>Wyloguj</button>;
+      <Link href="/">
+        <button>Home</button>
+      </Link>
     </div>
   );
 }
