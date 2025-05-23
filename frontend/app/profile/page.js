@@ -1,46 +1,31 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import LogoutButton from "../components/LogoutButton";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 export default function ProfilePage() {
-  const [userData, setUserData] = useState(null);
+  const { profile, keycloak } = useContext(AuthContext);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      console.warn("Brak tokena w localStorage");
-      return;
-    }
-
-    fetch("http://localhost:4001/profile", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => (res.ok ? res.json() : Promise.reject("Unauthorized")))
-      .then((data) => {
-        console.log(data.user);
-        setUserData(data.user);
-      })
-      .catch((err) => {
-        console.error(err);
-        setUserData(null);
+  const handleLogout = () => {
+    if (keycloak?.idToken) {
+      keycloak.logout({
+        redirectUri: "http://localhost:3000/",
+        idTokenHint: keycloak.idToken,
       });
-  }, []);
+    } else {
+      // fallback (niezalecany)
+      window.location.href = `http://localhost:8080/realms/quizz-app/protocol/openid-connect/logout?post_logout_redirect_uri=${encodeURIComponent(
+        "http://localhost:3000/"
+      )}`;
+    }
+  };
 
-  if (!userData)
-    return (
-      <div className="profile-container">
-        <p className="error-message">Brak dostępu lub brak danych.</p>
-      </div>
-    );
+  if (!profile) return <p>Ładowanie...</p>;
 
   return (
     <div className="profile-container">
-      <h1>Witaj, {userData.username}!</h1>
-      <LogoutButton />
+      <h1>Witaj, {profile.preferred_username}!</h1>
+      <button onClick={handleLogout}>Wyloguj</button>;
     </div>
   );
 }

@@ -1,9 +1,10 @@
 const express = require("express");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const { authenticateToken } = require("./middleware/jwtMiddleware");
+const User = require("./models/user");
+const { expressjwt: jwt } = require("express-jwt");
+const jwksRsa = require("jwks-rsa");
 
 dotenv.config();
 
@@ -11,35 +12,49 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const users = [];
-
 const PORT = process.env.AUTH_PORT || 4001;
-const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
+const MONGO_URI = process.env.MONGO_URI;
+const KEYCLOAK_ISSUER = process.env.KEYCLOAK_ISSUER;
+const KEYCLOAK_AUDIENCE = process.env.KEYCLOAK_AUDIENCE;
 
-app.post("/register", async (req, res) => {
-  const { username, password } = req.body;
-  const existing = users.find((u) => u.username === username);
-  if (existing) return res.status(400).json({ error: "User already exists" });
+mongoose
+  .connect(MONGO_URI)
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch((err) => {
+    console.error("❌ MongoDB error:", err);
+    process.exit(1);
+  });
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-  users.push({ username, password: hashedPassword });
-  res.json({ message: "User registered" });
+const checkJwt = jwt({
+  secret: jwksRsa.expressJwtSecret({
+    jwksUri: `${KEYCLOAK_ISSUER}/protocol/openid-connect/certs`,
+    cache: true,
+    rateLimit: true,
+  }),
+  issuer: KEYCLOAK_ISSUER,
+  audience: KEYCLOAK_AUDIENCE,
+  algorithms: ["RS256"],
 });
 
-app.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  const user = users.find((u) => u.username === username);
-  if (!user) return res.status(400).json({ error: "Invalid credentials" });
+app.get("/profile", checkJwt, async (req, res) => {
+  const { sub, preferred_username, email } = req.auth;
 
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) return res.status(400).json({ error: "Invalid credentials" });
+  let user = await User.findOne({ keycloakId: sub });
+  if (!user) {
+    user = new User({
+      keycloakId: sub,
+      username: preferred_username,
+      email: email,
+      provider: "keycloak",
+    });
+    await user.save();
+  }
 
-  const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: "1h" });
-  res.json({ token });
+  res.json({
+    username: user.username,
+    email: user.email,
+    roles: req.auth.realm_access?.roles || [],
+  });
 });
 
-app.get("/profile", authenticateToken, (req, res) => {
-  res.json({ user: req.user });
-});
-
-app.listen(PORT, () => console.log(`Auth service running on ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Auth service running on port ${PORT}`));
