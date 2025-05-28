@@ -2,11 +2,14 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 require("dotenv").config();
-const { notFound, errorHandler } = require("./src/middlewares/errorMiddleawre");
+const { notFound, errorHandler } = require("./src/middlewares/errorMiddleware");
 
 const quizzRoutes = require("./src/routes/quizzRoutes");
 const questionRoutes = require("./src/routes/questionRoutes");
 const answerRoutes = require("./src/routes/answerRoutes");
+const categoryRoutes = require("./src/routes/categoryRoutes");
+const levelRoutes = require("./src/routes/levelRoutes");
+const questionTypeRoutes = require("./src/routes/questionTypeRoutes");
 
 const app = express();
 
@@ -21,6 +24,9 @@ app.get("/", (req, res) => {
 app.use("/quizz", quizzRoutes);
 app.use("/question", questionRoutes);
 app.use("/answer", answerRoutes);
+app.use("/category", categoryRoutes);
+app.use("/level", levelRoutes);
+app.use("/question-type", questionTypeRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
