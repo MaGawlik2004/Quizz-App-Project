@@ -156,7 +156,7 @@ const getQuestionsWithAnswersByQuizIdModel = async (quizz_id) => {
 
     const questions = questionResult.rows.map((question) => ({
       ...question,
-      answers: answerResult.filter((a) => a.question_id === question.id),
+      answers: answerResult.rows.filter((a) => a.question_id === question.id),
     }));
 
     return questions;

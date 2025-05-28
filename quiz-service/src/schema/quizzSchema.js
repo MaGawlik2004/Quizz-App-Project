@@ -6,6 +6,9 @@ const createQuizzSchema = Joi.object({
     "string.max": "Nazwa quizzu nie może przekraczać {#limit} znaków",
     "any.required": "Nazwa quizzu jest wymagana.",
   }),
+  user_id: Joi.string().required().messages({
+    "any.required": "Id użytkownika jest wymagane.",
+  }),
   description: Joi.string().allow("", null),
   category_id: Joi.number().integer().positive().required().messages({
     "any.required": "Kategoria jest wymagana.",
@@ -27,6 +30,7 @@ const updateQuizzSchema = Joi.object({
   name: Joi.string().trim().max(100).messages({
     "string.max": "Nazwa quizzu nie może przekraczać {#limit} znaków",
   }),
+  user_id: Joi.string(),
   description: Joi.string().allow("", null),
   category_id: Joi.number().integer().positive(),
   level_id: Joi.number().integer().positive(),

@@ -1,12 +1,12 @@
 CREATE TABLE IF NOT EXISTS categories(
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL
-)
+);
 
 CREATE TABLE IF NOT EXISTS level(
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL
-)
+);
 
 CREATE TABLE IF NOT EXISTS quizz(
     id SERIAL PRIMARY KEY,
@@ -19,12 +19,12 @@ CREATE TABLE IF NOT EXISTS quizz(
     is_global BOOLEAN NOT NULL,
     FOREIGN KEY (category_id) REFERENCES categories(id),
     FOREIGN KEY (level_id) REFERENCES level(id)
-)
+);
 
 CREATE TABLE IF NOT EXISTS question_type(
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL
-)
+);
 
 CREATE TABLE IF NOT EXISTS question(
     id SERIAL PRIMARY KEY,
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS question(
     quizz_id INTEGER NOT NULL,
     FOREIGN KEY (type_id) REFERENCES question_type(id),
     FOREIGN KEY (quizz_id) REFERENCES quizz(id) ON DELETE CASCADE
-)
+);
 
 CREATE TABLE IF NOT EXISTS answer(
     id SERIAL PRIMARY KEY,
@@ -41,4 +41,4 @@ CREATE TABLE IF NOT EXISTS answer(
     is_answer BOOLEAN NOT NULL,
     question_id INTEGER NOT NULL,
     FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE
-)
+);

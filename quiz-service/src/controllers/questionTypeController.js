@@ -88,7 +88,7 @@ const deleteQuestionTypeController = async (req, res) => {
       id
     );
 
-    if (!deleteCategory) {
+    if (!deleteQuestionType) {
       return res.status(404).json({
         status: "error",
         message: "Nie znaleziono question type o podanym ID",

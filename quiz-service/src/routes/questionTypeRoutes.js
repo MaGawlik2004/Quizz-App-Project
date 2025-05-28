@@ -3,7 +3,7 @@ const router = express.Router();
 const questionTypeController = require("../controllers/questionTypeController");
 
 router.post("/", questionTypeController.createQuestionTypeController);
-router.get("/", questionTypeController.getAllQuestionTypesController);
+router.get("/", questionTypeController.getQuestionTypesController);
 router.get("/:id", questionTypeController.getQuestionTypeByIdController);
 router.get(
   "/name/:name",

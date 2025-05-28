@@ -158,7 +158,7 @@ module.exports = {
   createAnswerModel,
   updateAnswerModel,
   deleteAnswerModel,
-  getAnsweByIdModel,
+  getAnswerByIdModel,
   getAllAnswersByQuestionIdModel,
   getCorrectAnswersByQuestionIdModel,
 };

@@ -21,7 +21,7 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:24.0.1
     container_name: keycloak
-    command: start-dev
+    command: start-dev --import-realm
     ports:
       - "8080:8080"
     environment:
@@ -33,6 +33,8 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: admin
     depends_on:
       - keycloak-db
+    volumes:
+      - ./auth-service/keycloak/import/keycloak-realm-config.json:/opt/keycloak/data/import/keycloak-realm-config.json
 
   auth-service:
     build:
@@ -68,6 +70,20 @@ services:
     env_file:
       - .env
 
+  quiz-db:
+    image: postgres:15
+    container_name: quiz-db
+    environment:
+      POSTGRES_DB: quiz
+      POSTGRES_USER: quizuser
+      POSTGRES_PASSWORD: quizpass
+    ports:
+      - "5433:5432"
+    volumes:
+      - quiz_data:/var/lib/postgresql/data
+      - ./quiz-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+
 volumes:
   mongo_data:
   keycloak_data:
+  quiz_data:

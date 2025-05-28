@@ -6,10 +6,10 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const pool = new Pool({
-  user: process.env.DB_USER || "postgres",
-  host: process.env.DB_HOST || "localhost",
-  database: process.env.DB_NAME || "postgres",
-  password: process.env.DB_PASSWORD || "haslo123",
+  user: process.env.DB_USER || "quizuser",
+  host: process.env.DB_HOST || "quiz-db",
+  database: process.env.DB_NAME || "quiz",
+  password: process.env.DB_PASSWORD || "quizpass",
   port: process.env.DB_PORT || "5432",
 });
 
