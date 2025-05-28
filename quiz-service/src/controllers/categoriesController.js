@@ -94,7 +94,7 @@ const deleteCategoryController = async (req, res) => {
 
     res.status(200).json({
       status: "success",
-      message: "Wystąpił błąd podczas usuwania category",
+      message: "Category został usunięty",
       category: deleteCategory,
     });
   } catch (err) {
@@ -177,7 +177,7 @@ const getCategoryByNameController = async (req, res) => {
     console.error("Error in getCategoryByName:", err);
     res.status(500).json({
       status: "error",
-      message: "Wystąpił błąd podczas pobierania category użytkownika",
+      message: "Wystąpił błąd podczas pobierania category",
       error: err.message,
     });
   }
