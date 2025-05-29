@@ -161,7 +161,7 @@ const getAllQuizzController = async (req, res) => {
 
 const getAllQuizzByUserController = async (req, res) => {
   try {
-    const user_id = req.params.user_id;
+    const user_id = req.userId;
 
     if (!user_id) {
       return res.status(400).json({
@@ -222,7 +222,7 @@ const getFullQuizzByIdController = async (req, res) => {
 
 const countQuizzesByUserController = async (req, res) => {
   try {
-    const user_id = req.params.user_id;
+    const user_id = req.userId;
 
     if (!user_id) {
       return res.status(400).json({

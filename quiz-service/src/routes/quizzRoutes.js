@@ -28,16 +28,18 @@ router.route("/update/:id").put(updateQuizzController);
 // Usuń quiz po ID
 router.route("/delete/:id").delete(deleteQuizzController);
 
+// Pobierz wszystkie quizy użytkownika po jego ID
+router.route("/user").get(extractUserIdFromToken, getAllQuizzByUserController);
+
+// Policz ile quizów stworzył użytkownik
+router
+  .route("/count")
+  .get(extractUserIdFromToken, countQuizzesByUserController);
+
 // Pobierz quiz po ID
 router.route("/:id").get(getQuizzByIdController);
 
 // Pobierz pełne dane quizu (np. z pytaniami i odpowiedziami)
 router.route("/full/:id").get(getFullQuizzByIdController);
-
-// Pobierz wszystkie quizy użytkownika po jego ID
-router.route("/user/:user_id").get(getAllQuizzByUserController);
-
-// Policz ile quizów stworzył użytkownik
-router.route("/count/:user_id").get(countQuizzesByUserController);
 
 module.exports = router;

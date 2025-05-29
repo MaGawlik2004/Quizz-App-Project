@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import * as yup from "yup";
 import { Formik, Field, Form, FieldArray } from "formik";
+import Link from "next/link";
 
 const validationSchema = yup.object().shape({
   name: yup.string().max(100).required("Quizz name is required"),
@@ -14,7 +15,7 @@ const validationSchema = yup.object().shape({
   level_id: yup.number().required(),
   questions: yup.array().of(
     yup.object({
-      query: yup.string().max().required("Wymagana treść pytania"),
+      query: yup.string().max(255).required("Wymagana treść pytania"),
       type_id: yup.number().required("Wymagany typ pytania"),
       answers: yup.array().of(
         yup.object({
@@ -193,10 +194,9 @@ export default function quizzCreator() {
         level_id: "",
         questions: [],
       }}
-      //sprawdz walidacje w chat gpt premium
-      //   validationSchema={validationSchema}
-      //   validateOnChange={false}
-      //   validateOnBlur={false}
+      validationSchema={validationSchema}
+      validateOnChange={false}
+      validateOnBlur={false}
       onSubmit={(values, helpers) => {
         SendJsonToQuizzApi(values, helpers);
       }}
@@ -312,6 +312,7 @@ export default function quizzCreator() {
           </FieldArray>
 
           <button type="submit">Wyślij quiz</button>
+          <Link href="/">Wróć</Link>
         </Form>
       )}
     </Formik>
