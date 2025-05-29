@@ -2,7 +2,13 @@ const quizzModel = require("../models/quizzModel");
 
 const createQuizzController = async (req, res) => {
   try {
-    const newQuizz = await quizzModel.createQuizzModel(req.body);
+    const body = {
+      ...req.body,
+      user_id: req.userId,
+    };
+
+    const newQuizz = await quizzModel.createQuizzModel(body);
+
     res.status(201).json({
       status: "success",
       message: "Quizz został utworzony",

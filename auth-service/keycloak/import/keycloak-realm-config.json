@@ -1,10 +1,15 @@
 {
-  "realm": "myrealm",
+  "realm": "quizz-app",
   "enabled": true,
-  "displayName": "My Application Realm",
+  "displayName": "Quizz App Realm",
+  "registrationAllowed": true,
+  "loginWithEmailAllowed": true,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": true,
+  "sslRequired": "external",
   "clients": [
     {
-      "clientId": "spa-client",
+      "clientId": "frontend-client",
       "enabled": true,
       "publicClient": true,
       "redirectUris": ["http://localhost:3000/*"],
@@ -12,7 +17,8 @@
       "standardFlowEnabled": true,
       "directAccessGrantsEnabled": true,
       "attributes": {
-        "pkce.code.challenge.method": "S256"
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "+"
       }
     }
   ],
@@ -20,6 +26,10 @@
     {
       "username": "testuser",
       "enabled": true,
+      "emailVerified": true,
+      "firstName": "Test",
+      "lastName": "User",
+      "email": "testuser@example.com",
       "credentials": [
         {
           "type": "password",
@@ -27,6 +37,24 @@
           "temporary": false
         }
       ]
+    }
+  ],
+  "identityProviders": [
+    {
+      "alias": "google",
+      "providerId": "google",
+      "enabled": true,
+      "updateProfileFirstLoginMode": "on",
+      "trustEmail": true,
+      "storeToken": false,
+      "addReadTokenRoleOnCreate": false,
+      "authenticateByDefault": false,
+      "linkOnly": false,
+      "config": {
+        "clientId": "436154205486-nbdlvoqkceaqdbmedrtsihj1ri2gm9ie.apps.googleusercontent.com",
+        "clientSecret": "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",
+        "defaultScope": "openid email profile"
+      }
     }
   ]
 }

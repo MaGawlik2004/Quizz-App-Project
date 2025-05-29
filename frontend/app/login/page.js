@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { AuthContext } from "../context/AuthContext";
 
 export default function LoginPage() {
-  const { isAuthenticated, login } = useContext(AuthContext);
+  const { isAuthenticated, login, token } = useContext(AuthContext);
   const router = useRouter();
 
   useEffect(() => {

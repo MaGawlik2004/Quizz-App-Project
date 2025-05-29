@@ -12,11 +12,15 @@ const {
   countQuizzesByUserController,
 } = require("../controllers/quizzControllers");
 
+const {
+  extractUserIdFromToken,
+} = require("../middlewares/extractUserIdFromToken");
+
 // Pobierz wszystkie quizy
 router.route("/").get(getAllQuizzController);
 
 // Utwórz nowy quiz
-router.route("/create").post(createQuizzController);
+router.route("/create").post(extractUserIdFromToken, createQuizzController);
 
 // Zaktualizuj quiz po ID
 router.route("/update/:id").put(updateQuizzController);

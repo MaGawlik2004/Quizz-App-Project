@@ -22,11 +22,16 @@ function LayoutContent({ children }) {
                 <Link href="/login">Zaloguj się</Link>
               </li>
             ) : (
-              <li>
-                <Link href="/profile">
-                  <User size={24} />
-                </Link>
-              </li>
+              <>
+                <li>
+                  <Link href="/quizzCreator">Quizz Creator</Link>
+                </li>
+                <li>
+                  <Link href="/profile">
+                    <User size={24} />
+                  </Link>
+                </li>
+              </>
             )}
           </ul>
         </header>
